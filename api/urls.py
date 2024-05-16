@@ -30,7 +30,7 @@ urlpatterns = [
           views.SendConfirmEmailView.as_view(), name='send_confirm_email'),
      path('confirm-email/<str:uid>/<str:token>/',
           views.ConfirmEmailView.as_view(), name='confirm_email'),
-     path('user/', views.UserView.as_view(), name='user'),
+     path('auth-user/', views.UserView.as_view(), name='auth_user'),
      
      path('schema/', SpectacularAPIView.as_view(), name='schema'),
      path('docs/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
