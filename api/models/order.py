@@ -14,12 +14,9 @@ class OrderItem(BaseModel):
     buyer = models.ForeignKey(User, on_delete=models.CASCADE)
     animal = models.ForeignKey(Animal, on_delete=models.PROTECT)
     quantity = models.PositiveIntegerField(default=1)
-    checked_out = models.BooleanField(default=False)
     price_ordered_at = models.DecimalField(max_digits=12, decimal_places=2, null=True, blank=True)
 
     def paid_check_out(self):
-        self.checked_out = True
-
         if not self.price_ordered_at:
             self.price_ordered_at = self.product.price
         self.save()
@@ -30,7 +27,8 @@ class OrderItem(BaseModel):
         return round(self.product.price * self.quantity, 2)
 
     def checked_out_status(self):
-        if self.checked_out:
+        exists = self.order
+        if exists:
             return 'Yes'
         return 'No'
 
@@ -48,7 +46,7 @@ class Order(BaseModel):
     id = models.CharField(primary_key=True, max_length=10, default=order_id)
     payment_ref = models.CharField(max_length=100, null=True, blank=True)
     buyer = models.ForeignKey(User, on_delete=models.CASCADE)
-    items = models.ManyToManyField(OrderItem)
+    items = models.ManyToManyField(OrderItem, related_name="order")
     status = models.CharField(max_length=1, choices=STATUS_CHOICES, default='P')
     paid = models.DecimalField(max_digits=12, decimal_places=2, null=True, blank=True)
     delivery_fee = models.DecimalField(max_digits=12, decimal_places=2, null=True, blank=True)
