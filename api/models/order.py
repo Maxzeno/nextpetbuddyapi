@@ -1,7 +1,7 @@
 
 from api.utils.helper import unique_id
 from api.models.user import BaseModel, User
-from api.models.product import Product
+from api.models.product import Animal
 
 from django.db import models
 
@@ -12,8 +12,7 @@ def order_id():
 
 class OrderItem(BaseModel):
     buyer = models.ForeignKey(User, on_delete=models.CASCADE)
-    product = models.ForeignKey(Product, on_delete=models.PROTECT)
-    product_size = models.CharField(max_length=100, blank=True, null=True)
+    animal = models.ForeignKey(Animal, on_delete=models.PROTECT)
     quantity = models.PositiveIntegerField(default=1)
     checked_out = models.BooleanField(default=False)
     price_ordered_at = models.DecimalField(max_digits=12, decimal_places=2, null=True, blank=True)
@@ -37,7 +36,6 @@ class OrderItem(BaseModel):
 
     def __str__(self):
         return f"{self.buyer.name} - {self.product.name} x {self.quantity} - checked out: {self.checked_out_status()}"
-
 
 
 class Order(BaseModel):

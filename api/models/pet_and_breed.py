@@ -21,7 +21,7 @@ class Breed(BaseModel):
     name = models.CharField(max_length=100)
     description = models.CharField(max_length=100, blank=True, null=True)
     image = models.ImageField(upload_to='images/breed/', blank=True, null=True)
-    pet = models.ForeignKey(Pet, on_delete=models.CASCADE, related_name="breeds")
+    pet = models.ForeignKey(Pet, on_delete=models.PROTECT, related_name="breeds")
 
     def __str__(self):
         return self.name
