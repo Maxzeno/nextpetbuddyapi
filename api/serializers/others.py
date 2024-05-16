@@ -7,6 +7,7 @@ class ContactUsSerializer(serializers.ModelSerializer):
         model = models.ContactUs
         fields = '__all__'
         extra_kwargs = {
+            'is_resolved': {'read_only': True},
             'created_at': {'read_only': True},
             'updated_at': {'read_only': True},
         }
