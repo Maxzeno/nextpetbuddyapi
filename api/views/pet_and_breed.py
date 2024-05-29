@@ -6,6 +6,8 @@ from rest_framework import filters
 
 
 class PetListView(generics.ListAPIView):
+    authentication_classes = []
+    permission_classes = []
     queryset = models.Pet.objects.all()
     serializer_class = serializers.PetSerializer
     filter_backends = [filters.SearchFilter, filters.OrderingFilter, DjangoFilterBackend]
@@ -14,6 +16,8 @@ class PetListView(generics.ListAPIView):
     
 
 class BreedListView(generics.ListAPIView):
+    authentication_classes = []
+    permission_classes = []
     queryset = models.Breed.objects.all()
     serializer_class = serializers.BreedSerializer
     filter_backends = [filters.SearchFilter, filters.OrderingFilter, DjangoFilterBackend]

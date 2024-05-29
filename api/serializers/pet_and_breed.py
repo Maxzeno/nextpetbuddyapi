@@ -2,16 +2,6 @@ from rest_framework import serializers
 from api import models
 
 
-class PetSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = models.Pet
-        fields = '__all__'
-        extra_kwargs = {
-            'created_at': {'read_only': True},
-            'updated_at': {'read_only': True},
-        }
-
-
 class BreedSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Breed
@@ -20,3 +10,22 @@ class BreedSerializer(serializers.ModelSerializer):
             'created_at': {'read_only': True},
             'updated_at': {'read_only': True},
         }
+
+
+class PetSerializer(serializers.ModelSerializer):
+    breeds = BreedSerializer(many=True, read_only=True)
+    class Meta:
+        model = models.Pet
+        fields = '__all__'
+        extra_kwargs = {
+            'created_at': {'read_only': True},
+            'updated_at': {'read_only': True},
+            'link_count': {'read_only': True},
+        }
+        breeds = serializers.SerializerMethodField()
+
+        def get_breeds(self, obj):
+            try:
+                return obj.link_set.count()
+            except AttributeError:
+                return 0
