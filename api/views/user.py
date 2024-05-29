@@ -6,6 +6,21 @@ from rest_framework.response import Response
 
 from api.utils.helper import convert_drf_form_error_to_norm
 
+from rest_framework import reverse, status
+from rest_framework.response import Response
+from django.contrib.auth.tokens import default_token_generator
+from django.utils.http import urlsafe_base64_encode
+from django.utils.encoding import force_bytes
+from django.core.mail import EmailMultiAlternatives
+
+from decouple import config
+
+
+from drf_spectacular.utils import extend_schema
+
+from api import serializers
+
+
 @extend_schema(tags=['User'])
 class UserViewSet(ModelViewSet):
     def get_serializer(self, *args, **kwargs):
@@ -35,10 +50,23 @@ class UserViewSet(ModelViewSet):
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         if serializer.is_valid():
-            # Perform any custom logic before saving the user
             user = serializer.save()
 
-            # Return a custom response
+            token = default_token_generator.make_token(user)
+            uid = urlsafe_base64_encode(force_bytes(user.pk))
+            base_url = config('FRONTEND_BASE_URL')
+            reset_url = f"{base_url}{reverse.reverse('confirm_email', kwargs={'uid': uid, 'token': token}).replace('/api/v1', '')}"
+
+            try:
+                msg = EmailMultiAlternatives(
+                    'Email Confirmation',
+                    f'Click the following link to confirm your email: {reset_url}',
+                    config('EMAIL_HOST_USER'),
+                    [user.email]
+                )
+                msg.send()
+            except ConnectionRefusedError as e:
+                pass
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         else:
             return Response({'detail': convert_drf_form_error_to_norm(serializer.errors)}, status=status.HTTP_400_BAD_REQUEST)

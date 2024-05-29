@@ -63,7 +63,22 @@ class MyTokenObtainPairView(TokenObtainPairView):
         data = user_serializer.data
 
         if not user.email_confirmed:
-            return Response({'detail': "Email not confirmed", "data": user.id}, status=HTTP_450_EMAIL_NOT_CONFIRMED)
+            token = default_token_generator.make_token(user)
+            uid = urlsafe_base64_encode(force_bytes(user.pk))
+            base_url = config('FRONTEND_BASE_URL')
+            reset_url = f"{base_url}{reverse.reverse('confirm_email', kwargs={'uid': uid, 'token': token}).replace('/api/v1', '')}"
+
+            try:
+                msg = EmailMultiAlternatives(
+                    'Email Confirmation',
+                    f'Click the following link to confirm your email: {reset_url}',
+                    config('EMAIL_HOST_USER'),
+                    [user.email]
+                )
+                msg.send()
+            except ConnectionRefusedError as e:
+                return Response({'detail': 'An error accurred while tring to resend confirmation email'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return Response({'detail': 'Email not confirmed, new comfirmation email sent'}, status=HTTP_450_EMAIL_NOT_CONFIRMED)
 
         data['token'] = access_token
 
