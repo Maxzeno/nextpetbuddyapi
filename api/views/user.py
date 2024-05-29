@@ -3,8 +3,10 @@ from drf_spectacular.utils import extend_schema
 from api import serializers, models
 from rest_framework import status
 from rest_framework.response import Response
-
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import filters, mixins
 from api.utils.helper import convert_drf_form_error_to_norm
+from rest_framework.viewsets import GenericViewSet
 
 from rest_framework import reverse, status
 from rest_framework.response import Response
@@ -19,6 +21,16 @@ from decouple import config
 from drf_spectacular.utils import extend_schema
 
 from api import serializers
+
+
+@extend_schema(tags=['Address'])
+class AddressViewSet(mixins.CreateModelMixin,
+                   mixins.UpdateModelMixin, GenericViewSet):
+    queryset = models.Address.objects.all()
+    serializer_class = serializers.AddressSerializer
+    filter_backends = [filters.SearchFilter, filters.OrderingFilter, DjangoFilterBackend]
+    search_fields = []
+    ordering_fields = ['created_at']
 
 
 @extend_schema(tags=['User'])

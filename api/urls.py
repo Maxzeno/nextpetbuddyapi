@@ -6,6 +6,7 @@ from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView, Sp
 router = routers.DefaultRouter()
 
 router.register('user', views.UserViewSet, basename='user')
+router.register('address', views.AddressViewSet, basename='address')
 router.register('cart', views.OrderItemViewSet, basename='orderitem')
 router.register('order', views.OrderViewSet, basename='order')
 

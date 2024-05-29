@@ -4,6 +4,7 @@ from api import models
 # Register your models here.
 
 admin.site.register(models.User)
+admin.site.register(models.Address)
 admin.site.register(models.Pet)
 admin.site.register(models.Breed)
 admin.site.register(models.Order)

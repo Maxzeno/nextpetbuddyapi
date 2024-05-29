@@ -101,3 +101,9 @@ class User(AbstractBaseUser, PermissionsMixin, BaseModel):
         return f'{self.email} {self.username}'
 
 
+
+class Address(BaseModel):
+    state = models.CharField(max_length=50)
+    address = models.CharField(max_length=500)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='user_address', null=True)
+    

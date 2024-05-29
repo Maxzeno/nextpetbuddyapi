@@ -2,8 +2,21 @@ from rest_framework import serializers
 from api import models
 
 
-class UserSerializer(serializers.ModelSerializer):
+class AddressSerializer(serializers.ModelSerializer):
     class Meta:
+        model = models.Address
+        fields = '__all__'
+        extra_kwargs = {
+            'created_at': {'read_only': True},
+            'updated_at': {'read_only': True},
+        }
+
+
+class UserSerializer(serializers.ModelSerializer):
+    user_address = AddressSerializer(many=False, read_only=True)
+    
+    class Meta:
+        depth = 2
         model = models.User
         exclude = ('groups', 'user_permissions', 'last_login')
         extra_kwargs = {
@@ -21,6 +34,7 @@ class UserSerializer(serializers.ModelSerializer):
 
 class UserPostSerializer(serializers.ModelSerializer):
     class Meta:
+        depth = 2
         model = models.User
         exclude = ('groups', 'user_permissions', 'last_login')
         extra_kwargs = {
