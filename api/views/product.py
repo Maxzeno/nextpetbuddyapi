@@ -1,11 +1,15 @@
-from rest_framework import generics
+from rest_framework import mixins, viewsets
 from django_filters.rest_framework import DjangoFilterBackend
 from api.views import models
 from api.views import serializers
 from rest_framework import filters
+from drf_spectacular.utils import extend_schema
 
 
-class ProductListView(generics.ListAPIView):
+@extend_schema(tags=['Product'])
+class ProductListViewSet(mixins.ListModelMixin,
+                      mixins.RetrieveModelMixin,
+                   viewsets.GenericViewSet):
     authentication_classes = []
     permission_classes = []
     queryset = models.Animal.objects.all()

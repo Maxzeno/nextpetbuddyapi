@@ -9,12 +9,12 @@ router.register('user', views.UserViewSet, basename='user')
 router.register('address', views.AddressViewSet, basename='address')
 router.register('cart', views.OrderItemViewSet, basename='orderitem')
 router.register('order', views.OrderViewSet, basename='order')
+router.register('product', views.ProductListViewSet, basename='product'),
 
 urlpatterns = [
      path('', include(router.urls)),
 
      path('token/', views.MyTokenObtainPairView.as_view(), name='token_obtain_pair'),
-     path('product/', views.ProductListView.as_view(), name='product'),
      path('pet/', views.PetListView.as_view(), name='pet'),
      path('breed/', views.BreedListView.as_view(), name='breed'),
 
