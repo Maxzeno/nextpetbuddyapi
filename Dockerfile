@@ -20,4 +20,4 @@ RUN chmod +x /app/pre_run.sh
 ENTRYPOINT ["/app/pre_run.sh"]
 
 # Default command to run the Django application
-CMD ["gunicorn", "ctt.wsgi", "-b", "0.0.0.0:8000"]
+CMD ["gunicorn", "nextpetbuddyapi.wsgi", "-b", "0.0.0.0:8000"]
