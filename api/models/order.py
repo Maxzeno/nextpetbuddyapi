@@ -33,7 +33,7 @@ class OrderItem(BaseModel):
         return 'No'
 
     def __str__(self):
-        return f"{self.buyer.name} - {self.product.name} x {self.quantity} - checked out: {self.checked_out_status()}"
+        return f"{self.buyer.fullname} - {self.animal.name} x {self.quantity} - checked out: {self.checked_out_status()}"
 
 
 class Order(BaseModel):
