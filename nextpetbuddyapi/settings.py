@@ -29,8 +29,8 @@ DEBUG = config('DEBUG', default=False, cast=bool)
 
 # use local db, storage, email config create be me
 TRY_LOCAL_DB = config('TRY_LOCAL_DB', default=False, cast=bool)
-TRY_LOCAL_STORAGE = config('TRY_LOCAL_DB', default=False, cast=bool)
-TRY_LOCAL_EMAIL = config('TRY_LOCAL_DB', default=False, cast=bool)
+TRY_LOCAL_STORAGE = config('TRY_LOCAL_STORAGE', default=False, cast=bool)
+TRY_LOCAL_EMAIL = config('TRY_LOCAL_EMAIL', default=False, cast=bool)
 
 ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
 
