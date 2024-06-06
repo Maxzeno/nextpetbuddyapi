@@ -58,7 +58,7 @@ class OrderItemViewSet(mixins.CreateModelMixin,
 
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()
-        exists = models.OrderItem.objects.filter(id=instance, order__isnull=False)
+        exists = models.OrderItem.objects.filter(id=instance.id, order__isnull=False)
         if exists:
             raise ValidationError({'detail': 'This order item cannot be deleted.'})
 

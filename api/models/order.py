@@ -12,7 +12,7 @@ def order_id():
 
 class OrderItem(BaseModel):
     buyer = models.ForeignKey(User, on_delete=models.CASCADE)
-    animal = models.ForeignKey(Animal, on_delete=models.PROTECT)
+    animal = models.ForeignKey(Animal, on_delete=models.PROTECT, related_name="order_items")
     quantity = models.PositiveIntegerField(default=1)
     price_ordered_at = models.DecimalField(max_digits=12, decimal_places=2, null=True, blank=True)
 
