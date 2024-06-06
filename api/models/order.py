@@ -18,13 +18,13 @@ class OrderItem(BaseModel):
 
     def paid_check_out(self):
         if not self.price_ordered_at:
-            self.price_ordered_at = self.product.price
+            self.price_ordered_at = self.animal.price
         self.save()
 
     def total_price(self):
         if self.price_ordered_at:
             return round(self.price_ordered_at * self.quantity, 2)
-        return round(self.product.price * self.quantity, 2)
+        return round(self.animal.price * self.quantity, 2)
 
     def checked_out_status(self):
         exists = self.order

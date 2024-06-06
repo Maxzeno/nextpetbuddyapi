@@ -13,7 +13,7 @@ class Animal(BaseModel):
     id = models.CharField(primary_key=True, max_length=10, default=product_id)
     name = models.CharField(max_length=100)
     description = models.CharField(max_length=1000, blank=True, null=True)
-    image = models.ImageField(upload_to='images/animal/', blank=True, null=True)
+    image = models.ImageField(upload_to='images/animal/', blank=False, null=False)
     image2 = models.ImageField(upload_to='images/animal/', blank=True, null=True)
     image3 = models.ImageField(upload_to='images/animal/', blank=True, null=True)
     breed = models.ForeignKey(Breed, on_delete=models.PROTECT)

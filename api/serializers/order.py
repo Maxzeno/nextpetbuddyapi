@@ -49,6 +49,7 @@ class OrderPostSerializer(serializers.ModelSerializer):
 
 class OrderSerializer(serializers.ModelSerializer):
     class Meta:
+        depth = 2
         model = models.Order
         fields = '__all__'
         extra_kwargs = {
