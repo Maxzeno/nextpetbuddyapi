@@ -16,6 +16,9 @@ class ProductSerializer(serializers.ModelSerializer):
         }
 
     def get_orderitem(self, obj):
+        request = self.context.get('request', None)
+        if not request or not request.user.is_authenticated:
+            return None
         order_item = obj.order_items.filter(order__isnull=True).first()
         if order_item:
             return OrderItemSerializer(order_item).data
