@@ -20,7 +20,7 @@ class ProductSerializer(serializers.ModelSerializer):
         request = self.context.get('request', None)
         if not request or not request.user.is_authenticated:
             return None
-        order_item = obj.order_items.filter(order__isnull=True).first()
+        order_item = obj.order_items.filter(order__isnull=True, buyer=request.user).first()
         if order_item:
             return OrderItemSerializer(order_item).data
         return None

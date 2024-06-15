@@ -11,7 +11,7 @@ class Email(BaseModel):
     
 
 class ContactUs(BaseModel):
-    email = models.EmailField(unique=True)
+    email = models.EmailField()
     message = models.CharField(max_length=1000)
     is_resolved = models.BooleanField(default=False)
 
