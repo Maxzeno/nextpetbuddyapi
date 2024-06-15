@@ -3,6 +3,7 @@ from rest_framework import serializers
 from api.models import Animal
 from api.serializers.order import OrderItemSerializer
 
+
 class ProductSerializer(serializers.ModelSerializer):
     orderitem = serializers.SerializerMethodField()
 
