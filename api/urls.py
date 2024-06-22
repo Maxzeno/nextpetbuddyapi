@@ -14,6 +14,7 @@ router.register('product', views.ProductListViewSet, basename='product'),
 urlpatterns = [
      path('', include(router.urls)),
 
+     path('paystack-webhook/', views.WebhookVerifyPaystackPayment.as_view(), name='paystack-webhook'),
      path('token/', views.MyTokenObtainPairView.as_view(), name='token_obtain_pair'),
      path('pet/', views.PetListView.as_view(), name='pet'),
      path('breed/', views.BreedListView.as_view(), name='breed'),
