@@ -26,13 +26,12 @@ class WebhookVerifyPaystackPayment(generics.GenericAPIView):
                 resp = json.loads(request.body.decode('utf-8'))
                 ref = resp['data']['reference']
                 verify_payment = self.verify_payment(ref)
-
                 if not verify_payment['status']:
                     return Response({'detail': 'Payment not successful'}, status=status.HTTP_402_PAYMENT_REQUIRED)
-
-                order = Order.objects.get(id=verify_payment['metadata']['order_id'])
-                if order.ref == ref:
-                    return Response({'detail': 'Incomplete payment'}, status=status.HTTP_406_NOT_ACCEPTABLE)
+                
+                order = Order.objects.get(id=verify_payment['data']['metadata']['order_id'])
+                if order.payment_ref == ref:
+                    return Response({'detail': 'Already processed payment'}, status=status.HTTP_406_NOT_ACCEPTABLE)
                 
                 if not ((order.get_total_price_now() * 100) + DELIVERY_FEE <= verify_payment['data']['amount']):
                     order.payment_ref = ref
