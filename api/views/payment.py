@@ -13,6 +13,9 @@ from api.models.order import Order
 
 @method_decorator(csrf_exempt, name='dispatch')
 class WebhookVerifyPaystackPayment(generics.GenericAPIView):
+    authentication_classes = []
+    permission_classes = []
+    
     PAYSTACK_SECRET_KEY = settings.PAYSTACK_SECRET_KEY
     paystack_base_url = 'https://api.paystack.co'
 
