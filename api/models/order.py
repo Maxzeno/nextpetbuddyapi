@@ -27,7 +27,7 @@ class OrderItem(BaseModel):
         return round(self.animal.price * self.quantity, 2)
 
     def checked_out_status(self):
-        exists = self.order
+        exists = self.order.exists()
         if exists:
             return 'Yes'
         return 'No'
@@ -52,7 +52,6 @@ class Order(BaseModel):
     has_paid = models.BooleanField(default=False)
 
     def save(self, *args, **kwargs):
-        super().save(*args, **kwargs)
         if self.has_paid:
             # i thing we have an issue here which happens when we try to create order from admin
             for item in self.items.all():

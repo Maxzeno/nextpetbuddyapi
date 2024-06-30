@@ -42,9 +42,7 @@ class OrderItemViewSet(mixins.CreateModelMixin,
             query = query.first()
             query.quantity += 1
             query.save()
-            print(query.quantity)
             serializer = self.get_serializer(query)
-            print(serializer.data)
         else:
             self.perform_create(serializer)
             
@@ -92,8 +90,10 @@ class OrderViewSet(mixins.CreateModelMixin,
         serializer = self.get_serializer(data=data)
         serializer.is_valid(raise_exception=True)
         
-        orderitems = models.OrderItem.objects.filter(buyer=user, order__isnull=True)
-        order = models.Order.objects.create(buyer=user, items=orderitems)
+        orderitems = models.OrderItem.objects.filter(buyer=user, order__isnull=True)        
+        order = models.Order.objects.create(buyer=user)
+        order.items.set(orderitems)
+        order.save()
         serializer = self.get_serializer(order, many=False)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
         
