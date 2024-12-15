@@ -6,7 +6,7 @@ from rest_framework import filters
 
 
 class ProductListView(generics.ListAPIView):
-    queryset = models.Product.objects.all()
+    queryset = models.Animal.objects.all()
     serializer_class = serializers.ProductSerializer
     filter_backends = [filters.SearchFilter, filters.OrderingFilter, DjangoFilterBackend]
     search_fields = ['name']

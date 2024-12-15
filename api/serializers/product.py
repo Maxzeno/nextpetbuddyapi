@@ -4,7 +4,7 @@ from api import models
 
 class ProductSerializer(serializers.ModelSerializer):
     class Meta:
-        model = models.Product
+        model = models.Animal
         fields = '__all__'
         extra_kwargs = {
             'created_at': {'read_only': True},
