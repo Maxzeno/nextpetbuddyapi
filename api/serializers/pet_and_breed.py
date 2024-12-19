@@ -20,7 +20,6 @@ class PetSerializer(serializers.ModelSerializer):
         extra_kwargs = {
             'created_at': {'read_only': True},
             'updated_at': {'read_only': True},
-            'link_count': {'read_only': True},
         }
         breeds = serializers.SerializerMethodField()
 
