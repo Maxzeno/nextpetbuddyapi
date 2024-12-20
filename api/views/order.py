@@ -14,8 +14,10 @@ class OrderItemViewSet(mixins.CreateModelMixin,
                    mixins.DestroyModelMixin,
                    mixins.ListModelMixin,
                    GenericViewSet):
-    filter_backends = [filters.OrderingFilter, DjangoFilterBackend]
+    filter_backends = [filters.SearchFilter, filters.OrderingFilter, DjangoFilterBackend]
     ordering_fields = ['created_at']
+    filterset_fields = ['buyer__id', 'animal__id']
+    
     
     def get_serializer(self, *args, **kwargs):
         if hasattr(self, 'action') and self.action == 'create':
@@ -35,24 +37,25 @@ class OrderItemViewSet(mixins.CreateModelMixin,
         
         serializer = self.get_serializer(data=data)
         serializer.is_valid(raise_exception=True)
-        query = queryset.filter(buyer=user, animal_id=serializer.data.get('animal'), order__isnull=True)
+        query = queryset.filter(buyer=user, animal_id=serializer.validated_data.get('animal'), order__isnull=True)
         if query:
             query = query.first()
             query.quantity += 1
             query.save()
+            print(query.quantity)
+            serializer = self.get_serializer(query)
+            print(serializer.data)
         else:
             self.perform_create(serializer)
-        
+            
         return Response(serializer.data, status=status.HTTP_201_CREATED)
     
-    def list(self, request, *args, **kwargs):
-        queryset = self.get_queryset()
-        user = request.user
-
-        queryset = queryset.filter(buyer=user)
-        serializer = self.get_serializer(queryset, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
     
+    def get_queryset(self):
+        user = self.request.user
+        return models.OrderItem.objects.filter(buyer=user)
+    
+
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()
         exists = models.OrderItem.objects.filter(id=instance, order__isnull=False)
