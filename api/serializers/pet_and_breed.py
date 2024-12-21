@@ -21,10 +21,3 @@ class PetSerializer(serializers.ModelSerializer):
             'created_at': {'read_only': True},
             'updated_at': {'read_only': True},
         }
-        breeds = serializers.SerializerMethodField()
-
-        def get_breeds(self, obj):
-            try:
-                return obj.link_set.count()
-            except AttributeError:
-                return 0
