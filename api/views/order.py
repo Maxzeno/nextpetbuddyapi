@@ -53,7 +53,7 @@ class OrderItemViewSet(mixins.CreateModelMixin,
     
     def get_queryset(self):
         user = self.request.user
-        return models.OrderItem.objects.filter(buyer=user)
+        return models.OrderItem.objects.filter(buyer=user, order__isnull=True)
     
 
     def destroy(self, request, *args, **kwargs):
@@ -65,14 +65,10 @@ class OrderItemViewSet(mixins.CreateModelMixin,
         instance.delete()
         return Response({'detail': 'Cart item deleted successfully'}, status=status.HTTP_204_NO_CONTENT)
 
-        
-    def get_queryset(self):
-        queryset = models.OrderItem.objects.all()
-        return queryset
-
 
 @extend_schema(tags=['Order'])
 class OrderViewSet(mixins.CreateModelMixin,
+                   mixins.RetrieveModelMixin,
                    mixins.ListModelMixin,
                    GenericViewSet):
     filter_backends = [filters.OrderingFilter, DjangoFilterBackend]
@@ -101,15 +97,8 @@ class OrderViewSet(mixins.CreateModelMixin,
         serializer = self.get_serializer(order, many=False)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
         
-    def list(self, request, *args, **kwargs):
-        queryset = self.get_queryset()
-        user = request.user
-
-        queryset = queryset.filter(buyer=user)
-        serializer = self.get_serializer(queryset, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
-
 
     def get_queryset(self):
-        queryset = models.Order.objects.all()
+        user = self.request.user
+        queryset = models.Order.objects.filter(buyer=user)
         return queryset
