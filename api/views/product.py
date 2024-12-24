@@ -19,3 +19,9 @@ class ProductListViewSet(mixins.ListModelMixin,
     ordering_fields = ['created_at']
     filterset_fields = ['breed', 'breed__pet']
     
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
+        context.update({
+            'request': self.request
+        })
+        return context
