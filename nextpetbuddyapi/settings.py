@@ -34,6 +34,8 @@ TRY_LOCAL_EMAIL = config('TRY_LOCAL_EMAIL', default=False, cast=bool)
 
 ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
 
+FRONTEND_BASE_URL = config('FRONTEND_BASE_URL')
+
 _ALLOWED_HOST = config('ALLOWED_HOST')
 if _ALLOWED_HOST:
     ALLOWED_HOSTS.extend(_ALLOWED_HOST.split())
@@ -247,7 +249,7 @@ CORS_ALLOWED_ORIGINS = [
     "https://127.0.0.1:3000",
 ]
 
-for host in _ALLOWED_HOST.split():
-    CORS_ALLOWED_ORIGINS.append(f'http://{host}')
-    CORS_ALLOWED_ORIGINS.append(f'https://{host}')
+
+CORS_ALLOWED_ORIGINS.append(f'http://{FRONTEND_BASE_URL}')
+CORS_ALLOWED_ORIGINS.append(f'https://{FRONTEND_BASE_URL}')
 
