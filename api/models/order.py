@@ -49,9 +49,7 @@ class Order(BaseModel):
     items = models.ManyToManyField(OrderItem, related_name="order")
     status = models.CharField(max_length=1, choices=STATUS_CHOICES, default='P')
     paid = models.DecimalField(max_digits=12, decimal_places=2, null=True, blank=True)
-    delivery_fee = models.DecimalField(max_digits=12, decimal_places=2, null=True, blank=True)
     has_paid = models.BooleanField(default=False)
-    incomplete_payment = models.BooleanField(default=False)
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
