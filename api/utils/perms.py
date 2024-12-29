@@ -27,10 +27,8 @@ class MyPerm(BasePermission):
         return None
 
     def has_permission(self, request, view):
-        print('check in myperm')
         check_basic_perm = self.check_basic_perm(request, view)
         if check_basic_perm is not None:
-            print('in the catch', check_basic_perm)
             raise MyAPIException(**check_basic_perm)
     
         return True
